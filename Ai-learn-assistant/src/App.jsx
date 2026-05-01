@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router ,Routes,Route,Navigate} from 'react-router-dom';
+import {BrowserRouter as Router ,Routes,Route,Navigate, BrowserRouter} from 'react-router-dom';
 import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -14,7 +14,7 @@ const App = () => {
      </div>
   );
 } return(
-  <Router>
+  <BrowserRouter>
     <Routes>
       <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
@@ -24,7 +24,7 @@ const App = () => {
       </Route> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
-    </Router>
+    </BrowserRouter>
 );
 }
 export default App;
