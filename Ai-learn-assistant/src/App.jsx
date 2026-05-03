@@ -21,7 +21,8 @@ const App = () => {
       <Route path="/register" element={<RegisterPage />} />
       {/* <Route element={<ProtectedRoute/>}>
         <Route path="/dashboard" element={<DashboardPage />} />
-      </Route> */}
+      </Route> */}  
+       comment by arkan
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
     </BrowserRouter>
