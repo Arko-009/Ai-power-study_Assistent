@@ -19,4 +19,12 @@ const registerValidation =[
 const loginValidation =[
     body('email').isEmail().normalizeEmail().withMessage('Please Provide Valid Email'),
     body('password').isEmpty().withMessage('Password is Required')
-]
+];
+//public routes 
+router.post('/register',registerValidation,register);
+router.post('/login',loginValidation,login);
+//protected routes 
+router.get('/profile',protect, getProfile);
+router.put('/profile',protect, updateProfile);
+router.post('/change-password',protect, changePassword);
+export default router;
