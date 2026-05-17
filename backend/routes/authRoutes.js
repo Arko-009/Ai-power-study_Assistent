@@ -1,5 +1,5 @@
 import express from 'express';
-import { ExpressValidator } from 'express-validator';
+import { body } from 'express-validator';
 import {
     register ,
     login,
