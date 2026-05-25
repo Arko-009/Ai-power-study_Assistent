@@ -58,7 +58,146 @@ const getScoreMessage =(score)=>{
       return 'Keep Practicing 👍🤔👀';
 }
 return(
-    <div>QuizResultPage</div>
-) 
+    <div className="max-w-5xl mx-auto">
+        {/* Back Button*/}
+        <div className="mb-6">
+            <Link  to={`/documents/${quiz.document._id}`}
+            className="group inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors duration-200">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" strokeWidth={2} />
+                Back to Document
+            </Link>
+        </div>
+        <PageHeader title={`${quiz.title} || 'Quiz'} Results`} />
+        {/* Score cards */}
+        <div className="bg-white/80 backdrop-blur-xl border-2 border-slate-200 rounded-2xl  shadow-slate-200/50 p-8 mb-8">
+            <div className="text-center space-y-6">
+                   <div className="inline-flex items-center justify-center w-15 h-15 rounded-2xl bg-linear-to-br from-emerald-100 to-teal-100 shadow-lg shadow-emerals-500/25">
+                         <Trophy className="w-7 h-7 text-emerald-600" strokeWidth={2} />
+                   </div>
+                   <div>
+                    <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-2"> Your Score</p>
+                    <div className={`inline-block text-5xl font-bold bg-linear-to-r ${getScoreColor(score)} bg-clip-text text-transparent mb-2`}>
+                        {score}%
+                    </div>
+                    <p className="text-lg font-medium text-slate-700">{getScoreMessage(score)}</p>
+                   </div>
+                    {/* Stats */}
+                    <div className="flex items-center justify-center gap-4 pt-4">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 broder border-slate-200 rounded-xl">
+                            <Target className="w-4 h-4 text-slate-600" strokeWidth={2} />
+                            <span className="text-sm font-semibold text-slate-700">
+                                {totalQuestions} Total
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2  bg-emerald-50 border-emerald-200 rounded-xl">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600" StrokeWidth={2} />
+                            <span className="text-sm font-semibold text-emerald-700">
+                                {correctAnswers} Correct
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-rose-50 border-rose-200 rounded-xl">
+                            <XCircle className="w-4 h-4 text-rose-600" StrokeWidth={2} />
+                            <span className="text-sm font-semibold text-rose-700">
+                                {incorrectAnswers} Incorrect
+                            </span>
+                        </div>
+                    </div>
+            </div>
+        </div>
+          {/* Quiostions Review*/}
+          <div className="space-y-6">
+              <div className="flex item-center gap-3 mb-2">
+                 <BookOpen className="w-5 h-5 text-slate-600" strokeWidth={2} />
+                 <h3 className="text-lg font-semibold text-slate-900">Detailed Review</h3>
+                 </div>
+                 {detailedResults.map((result,index)=>{
+                    const userAnswerIndex = result.options.findIndex(opt => opt === result.selectedAnswer);
+                    const correctAnswerIndex = result.correctAnswer.startsWith('O')
+                        ? parseInt(result.correctAnswer.substring(1))-1
+                        : result.options.findIndex(opt => opt ===  result.correctAnswer);
+                        const isCorrect = result.isCorrect;
+                        return(
+                            <div  key={index} className="bg-white backdrop-blur-2xl border-2 border-slate-200 rounded-2xl shadow-slate-200/50">
+                                <div className="flex item-start justify-between gap-4 mb-3">
+                                    <div className="flex-1">
+                                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl">
+                                              <span className="text-xs font-semibold text-slate-700"> Quiostion {index + 1}</span>
+                                         </div>
+                                         <h4 className="text-base font-semibold text-slate-900 loading-reelaxed">{result.question}</h4>
+                                    </div>
+                                    <div className={`shrink-0 w-10 rounded-xl flex items-center justify-center ${ isCorrect ? 'bg-emrald-50 border-2 border-emrald-200': 'bg-rose-50 border-2 border-rose-200'}`}>
+                                     {isCorrect ?(
+                                        <CheckCircle2 className="w-5 h-5 text-emerald-600" strokeWidth={2,5}/>
+                                     ):(
+                                        <XCircle className="w-5 h-5 text-rose-600" strokeWidth={2,5}/>
+                                     )}
+                                    </div>
+                                </div>
+                                <div className="space-y3 mb-4">
+                                 {result.options.map((option,optIndex)=>{
+                                    const isCorrectOption =optIndex === correctAnswerIndex;
+                                    const isUserAnswer =optIndex === userAnswerIndex;
+                                    const isWrongAnswer = isUserAnswer && !isCorrect;
+                                    return (
+                                        <div key={optIndex}  className={`reletive px-4 py-3 rounded-lg border-2 transition-all duration-200 ${
+                                            isCorrectOption ? 'bg-emerald-50 border-emerald-300 shadow-lg shadow-emerald-500/10':
+                                            isWrongAnswer ? 'bg-rose-50 border-rose-300 shadow-lg shadow-rose-500/10':
+                                            'bg-slate-50 border-slate-200'
+                                        }`}>
+                                                <div className="flex item-center justify-between gap-3">
+                                                    <span className={`text-sm font-medium  ${
+                                                        isCorrectOption ?'text -emrald-900': isWrongAnswer ?'text-rose-900':'text-slate-900'}`}>
+                                                    {option}
+                                                    </span>
+                                                    <div className="flex item-center gap-2">
+                                                        {isCorrectOption && (
+                                                            <span className="inline-flex  item-center gap-1 px-2 py-1 bg-emerald-50 border border-emerald-200 rounded-lg font-semibold text-emerald-700">
+                                                                <CheckCircle2 className="w-3 h-3" strokeWidth={2,5}/> Correct
+                                                            </span>
+                                                        )}
+                                                        {isWrongAnswer  && (
+                                                            <span className="inline-flex  item-center gap-1 px-2 py-1 bg-rose-50 border border-rose-200 rounded-lg font-semibold text-rose-700">
+                                                                <XCircle className="w-3 h-3" strokeWidth={2,5}/> Your answer
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    );
+                                 })}
+                                </div>
+                                {/* Explanation */}
+                                {result.explanation && (
+                                    <div className="p-4 bg-linear-to-br from-slate-50 via-white to-slate-100/50 border border-slate-200rounded-2xl">
+                                        <div className="flex items-start gap-3">
+                                            <div className="shrink-0 w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center mt-0.5">
+                                            <BookOpen className="w-4 h-4 text-slate-600" strokeWidth={2} />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-xs font-emrald text-slate-600 uppercase  tracking-wide mb-1">Explanation</p>
+                                                <p  className="text-sm text-slate-700 loading-reelaxed">{result.explanation}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                        );
+                 })}
+          </div>
+          {/*Action button*/}
+          <div className="mt-8 flex justify-center">
+            <Link to={`/documents.${quiz.document._id}`}>
+            <button className="group relative px-8 h-12 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-2xl transition-all duration-200 shadow-emerald-500/25 active:scale-95 overflow-hidden">
+                <span className="relative z-10 flex items-center gap-2">
+                    <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" strokeWidth={2.5} />
+                    Return to Document
+                </span>
+                <div className="absolute inset-0 bg-linear-tor  from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-200"/>
+            </button>
+            </Link>
+          </div>
+    </div>
+   ) 
 }
 export default QuizResultPage;
