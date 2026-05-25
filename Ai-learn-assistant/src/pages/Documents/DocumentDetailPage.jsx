@@ -122,7 +122,7 @@ if (!document) {
 return (
     <div>
     <div className="mb-4">
-        <Link to="/documents" className="inline-flex items-center gap-2 text-sm Otext-neutral-600 hover: text-neutral-900 transition-colors">
+        <Link to="/documents" className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
             <ArrowLeft size={16} />
             Back to Documents
         </Link>
@@ -130,8 +130,6 @@ return (
     <PageHeader title={document.data.title} />
     <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
   </div>
-
 )
 }
-
 export default DocumentDetailPage;
