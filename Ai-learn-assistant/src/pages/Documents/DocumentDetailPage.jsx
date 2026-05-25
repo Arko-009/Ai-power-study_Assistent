@@ -58,15 +58,15 @@ const DocumentDetailPage = () => {
     const pdfUrl = getPdfUrl();
 
  return (
-  <div className="bg-white border Iborder-gray-300 rounded-lg overflow-hidden shadow-sm">
+  <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm">
     <div className="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-300">
-      <span className="text-sm font-medium Otext-gray-700">-Document Viewer</span>
+      <span className="text-sm font-medium text-gray-700">Document Viewer</span>
 
       <a
         href={pdfUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-sm Otext-blue-600 hover: text-blue-700 font-medium transition-color-blue"
+        className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 font-medium transition-color-blue"
       >
         <ExternalLink size={16} />
         Open in new tab
@@ -75,7 +75,7 @@ const DocumentDetailPage = () => {
     <div className="bg-gray-100 p-1">
       <iframe
         src={pdfUrl}
-        className="w-full h-[78vh] bg-white rounded border border-gray-300"
+        className="w-full h-[70vh] bg-white rounded border border-gray-300"
         title="PDF Viewer"
         frameBorder="0"
         style={{
