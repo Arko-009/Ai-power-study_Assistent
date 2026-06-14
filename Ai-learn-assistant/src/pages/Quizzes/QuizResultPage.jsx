@@ -40,11 +40,11 @@ if(!results || !results.data){
         </div>
     );
 }
-const {data:{quiz,result: detailedResults}} =results;
+const {data:{quiz,results: detailedResults}} =results;
 const score =quiz.score;
 const totalQuestions =detailedResults.length;
-const correctAnswer = detailedResults.filter(r => r.isCorrect).length;
-const incorrectAnswers = totalQuiostions - correctAnswers ;
+const correctAnswers = detailedResults.filter(r => r.isCorrect).length;
+const incorrectAnswers = totalQuestions - correctAnswers;
 const getScoreColor = (score) => {
     if(score >= 80) return 'from-emerald-500 to-teal-500';
     if(score >= 60) return 'from-amber-500 to-orange-500';

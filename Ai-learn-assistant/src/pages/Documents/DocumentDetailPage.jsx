@@ -10,6 +10,7 @@ import ChatInterface from '../../components/chat/ChatInterface';
 import AIActions from '../../components/ai/AIActions';
 import FlashcardManager from '../../components/flashcards/FlashcardManager';
 import QuizManager from '../../components/quizzes/QuizManager';
+import QuizResultsManager from '../../components/quizzes/QuizResultsManager';
 
 const DocumentDetailPage = () => {
 
@@ -105,12 +106,17 @@ const DocumentDetailPage = () => {
         return <QuizManager documentId={id} />
     };
 
+    const renderResultsTab = () => {
+        return <QuizResultsManager documentId={id} />
+    };
+
     const tabs = [
         { name: 'Content', label: 'Content', content: renderContent() },
         { name: 'Chat', label: 'Chat', content: renderChat() },
         { name: 'AI Actions', label: 'AI Actions', content: renderAIActions() },
         { name: 'Flashcards', label: 'Flashcards', content: renderFlashcardsTab() },
         { name: 'Quizzes', label: 'Quizzes', content: renderQuizzesTab() },
+        { name: 'Results', label: 'Results', content: renderResultsTab() },
     ];
 
     if (loading) {
