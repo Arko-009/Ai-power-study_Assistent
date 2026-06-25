@@ -8,6 +8,36 @@ if (!process.env.GEMINI_API_KEY) {
     process.exit(1);
 }
 
+// Helper to handle temporary API errors with exponential backoff
+const generateContentWithRetry = async (params, maxRetries = 5) => {
+    let retries = 0;
+    const originalModel = params.model;
+    while (retries < maxRetries) {
+        try {
+            return await ai.models.generateContent(params);
+        } catch (error) {
+            const status = error?.status || error?.response?.status || error?.error?.code || 500;
+            const isRetryable = status === 503 || status === 429 || status === 500 || error.message?.includes('503') || error.message?.includes('429');
+            
+            if (isRetryable && retries < maxRetries - 1) {
+                retries++;
+                const delay = Math.pow(2, retries) * 1000 + Math.random() * 1000; // Exponential backoff with jitter
+                console.warn(`Gemini API overloaded (${status}). Retrying in ${Math.round(delay)}ms... (Attempt ${retries} of ${maxRetries - 1})`);
+                
+                // Switch to a fallback model on the last two attempts if standard flash is saturated
+                if (retries >= maxRetries - 2 && originalModel === 'gemini-2.5-flash') {
+                    params.model = 'gemini-2.5-pro';
+                    console.warn(`Switching to fallback model: ${params.model} to bypass saturation.`);
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, delay));
+            } else {
+                throw error;
+            }
+        }
+    }
+};
+
 /**
  * Generate flashcards from text
  * @param {string} text - Document text
@@ -26,8 +56,8 @@ export const generateFlashcards = async (text, count = 10) => {
     ${text.substring(0, 15000)}`;
 
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
+        const response = await generateContentWithRetry({
+            model: "gemini-2.5-flash",
             contents: prompt
         });
 
@@ -87,8 +117,8 @@ export const generateQuiz = async (text, numQuestions = 5) => {
     ${text.substring(0, 15000)}`;
 
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
+        const response = await generateContentWithRetry({
+            model: "gemini-2.5-flash",
             contents: prompt
         });
 
@@ -139,8 +169,8 @@ export const generateSummary = async (text) => {
     Text:
     ${text.substring(0, 20000)}`;
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
+        const response = await generateContentWithRetry({
+            model: "gemini-2.5-flash",
             contents: prompt
         });
         const generatedText = response.text;
@@ -170,8 +200,8 @@ export const chatWithContext = async (question, chunks) => {
     Answer:`;
 
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
+        const response = await generateContentWithRetry({
+            model: "gemini-2.5-flash",
             contents: prompt
         });
         const generatedText = response.text;
@@ -195,8 +225,8 @@ export const explainConcept = async (concept, context) => {
     Context:
     ${context.substring(0, 10000)}`;
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
+        const response = await generateContentWithRetry({
+            model: "gemini-2.5-flash",
             contents: prompt
         });
         const generatedText = response.text;

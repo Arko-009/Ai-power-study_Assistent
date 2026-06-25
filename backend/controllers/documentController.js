@@ -5,6 +5,7 @@ import { extractTextFromPDF } from '../utils/pdfParser.js';
 import { chunkText } from '../utils/textChunker.js';
 import fs from 'fs/promises';
 import mongoose from 'mongoose';
+import { v2 as cloudinary } from 'cloudinary';
 
 //@desc Upload PDF document
 //@route POST /api/documents/upload
@@ -22,8 +23,12 @@ export const uploadDocument = async (req, res, next) => {
         const { title } = req.body;
 
         if (!title) {
-            // DElete uploaded file if no title provided
-            await fs.unlink(req.file.path);
+            // Delete uploaded file if no title provided
+            if (req.file && req.file.path && req.file.path.startsWith('http')) {
+                await cloudinary.uploader.destroy(req.file.filename, { resource_type: 'raw' }).catch(() => {});
+            } else if (req.file && req.file.path) {
+                await fs.unlink(req.file.path).catch(() => {});
+            }
             return res.status(400).json({
                 success: false,
                 error: 'Title is required',
@@ -32,8 +37,7 @@ export const uploadDocument = async (req, res, next) => {
         }
 
         // Construct the URL for the uploaded file
-        const baseUrl = `http://localhost:${process.env.PORT || 8000}`;
-        const fileUrl = `${baseUrl}/uploads/documents/${req.file.filename}`;
+        const fileUrl = req.file.path;
 
         // Create document record in database
         const document = await Document.create({
@@ -59,7 +63,11 @@ export const uploadDocument = async (req, res, next) => {
     } catch (error) {
         // Clean up file on error
         if (req.file) {
-            await fs.unlink(req.file.path).catch(() => { });
+            if (req.file.path && req.file.path.startsWith('http')) {
+                await cloudinary.uploader.destroy(req.file.filename, { resource_type: 'raw' }).catch(() => {});
+            } else if (req.file.path) {
+                await fs.unlink(req.file.path).catch(() => { });
+            }
         }
         next(error);
     }
@@ -198,8 +206,21 @@ export const deleteDocument = async (req, res, next) => {
             });
         }
 
-        // Delete file from filesystem
-        await fs.unlink(document.filePath).catch(() => { });
+        // Delete file from filesystem or cloudinary
+        if (document.filePath && document.filePath.startsWith('http')) {
+            const isRaw = document.filePath.includes('/raw/upload/');
+            const type = isRaw ? 'raw' : 'image';
+            const match = document.filePath.match(/upload\/(?:v\d+\/)?(.+)/);
+            if (match) {
+                let publicId = match[1];
+                if (!isRaw) {
+                    publicId = publicId.replace(/\.[^/.]+$/, "");
+                }
+                await cloudinary.uploader.destroy(publicId, { resource_type: type }).catch(() => {});
+            }
+        } else if (document.filePath) {
+            await fs.unlink(document.filePath).catch(() => { });
+        }
         // Delete document
         await document.deleteOne();
 

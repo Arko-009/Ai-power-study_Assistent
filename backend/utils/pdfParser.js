@@ -3,12 +3,20 @@ import { PDFParse } from 'pdf-parse';
 
 /**
  * Extract text from PDF file
- * @param {string} filePath - Path to PDF file
+ * @param {string} filePath - Path to PDF file or HTTP URL
  * @returns {Promise<{text: string, numPages: number, info: object}>}
  */
 export const extractTextFromPDF = async (filePath) => {
     try {
-        const dataBuffer = await fs.readFile(filePath);
+        let dataBuffer;
+        if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+            const response = await fetch(filePath);
+            const arrayBuffer = await response.arrayBuffer();
+            dataBuffer = Buffer.from(arrayBuffer);
+        } else {
+            dataBuffer = await fs.readFile(filePath);
+        }
+        
         // pdf-parse expects a Unit8Array, not a Buffer
         const parser = new PDFParse(new Uint8Array(dataBuffer));
         const data = await parser.getText();

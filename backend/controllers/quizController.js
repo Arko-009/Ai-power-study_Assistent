@@ -87,7 +87,17 @@ export const submitQuiz = async (req, res, next) => {
             const { questionIndex, selectedAnswer } = answer;
             if (questionIndex < quiz.questions.length) {
                 const question = quiz.questions[questionIndex];
-                const isCorrect = selectedAnswer === question.correctAnswer;
+                
+                let actualCorrectAnswerText = question.correctAnswer;
+                // Handle cases where AI returns 'O1', 'O2', etc. instead of the full text
+                if (/^O[1-4]$/.test(question.correctAnswer.trim())) {
+                    const idx = parseInt(question.correctAnswer.trim().substring(1)) - 1;
+                    actualCorrectAnswerText = question.options[idx];
+                } else if (question.correctAnswer.trim().match(/^O[1-4]:/)) {
+                    actualCorrectAnswerText = question.correctAnswer.trim().substring(3).trim();
+                }
+
+                const isCorrect = (selectedAnswer || "").trim() === (actualCorrectAnswerText || "").trim();
                 if (isCorrect) correctCount++;
                 userAnswers.push({
                     questionIndex,
