@@ -85,20 +85,27 @@ const AIActions = () => {
                                 </div>
                                 <p className="text-sm text-slate-600 leading-relaxed">Get a concise summary of the entire document.</p>
                             </div>
-                            <button
-                                onClick={handleGenerateSummary}
-                                disabled={loadingAction === "summary"}
-                                className="shrink-0 h-10 px-5 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
-                            >
-                                {loadingAction === "summary" ? (
-                                    <span className="flex items-center gap-2">
-                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                        Loading....
+                            <div className="flex flex-col items-end gap-2">
+                                <button
+                                    onClick={handleGenerateSummary}
+                                    disabled={loadingAction === "summary"}
+                                    className="shrink-0 h-10 px-5 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                                >
+                                    {loadingAction === "summary" ? (
+                                        <span className="flex items-center gap-2">
+                                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                            Loading....
+                                        </span>
+                                    ) : (
+                                        "Summarize"
+                                    )}
+                                </button>
+                                {loadingAction === "summary" && (
+                                    <span className="text-xs text-teal-600 animate-pulse font-medium">
+                                        This may take up to 2-5 minutes depending on load...
                                     </span>
-                                ) : (
-                                    "Summarize"
                                 )}
-                            </button>
+                            </div>
                         </div>
                     </div>
 
@@ -116,29 +123,36 @@ const AIActions = () => {
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
                                 Enter a topic or concept from the document to get a detailed explanation.
                             </p>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="text"
-                                    value={concept}
-                                    onChange={(e) => setConcept(e.target.value)}
-                                    placeholder="e.g., 'React Hooks'"
-                                    className="flex-1 h-11 px-4 border-2 border-slate-200 rounded-xl bg-slate-50/50 text-slate-900 placeholder-slate-400 text-sm font-medium transition-all duration-200 focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-purple-500/10"
-                                    disabled={loadingAction === "explain"}
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={loadingAction === "explain" || !concept.trim()}
-                                    className="shrink-0 h-11 px-5 bg-linear-to-r from-emerald-600 to-emerald-500 hover:from-emerald-600 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
-                                >
-                                    {loadingAction === "explain" ? (
-                                        <span className="flex items-center gap-2">
-                                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                            Loading....
-                                        </span>
-                                    ) : (
-                                        "Explain"
-                                    )}
-                                </button>
+                            <div className="flex flex-col items-end gap-2 w-full">
+                                <div className="flex items-center gap-3 w-full">
+                                    <input
+                                        type="text"
+                                        value={concept}
+                                        onChange={(e) => setConcept(e.target.value)}
+                                        placeholder="e.g., 'React Hooks'"
+                                        className="flex-1 h-11 px-4 border-2 border-slate-200 rounded-xl bg-slate-50/50 text-slate-900 placeholder-slate-400 text-sm font-medium transition-all duration-200 focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-purple-500/10"
+                                        disabled={loadingAction === "explain"}
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={loadingAction === "explain" || !concept.trim()}
+                                        className="shrink-0 h-11 px-5 bg-linear-to-r from-emerald-600 to-emerald-500 hover:from-emerald-600 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                                    >
+                                        {loadingAction === "explain" ? (
+                                            <span className="flex items-center gap-2">
+                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                Loading....
+                                            </span>
+                                        ) : (
+                                            "Explain"
+                                        )}
+                                    </button>
+                                </div>
+                                {loadingAction === "explain" && (
+                                    <span className="text-xs text-emerald-600 animate-pulse font-medium">
+                                        Analyzing context, this may take a moment...
+                                    </span>
+                                )}
                             </div>
                         </form>
                     </div>

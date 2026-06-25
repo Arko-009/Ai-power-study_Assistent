@@ -157,12 +157,10 @@ const DocumentListPage = () => {
                             Manage and Organize your learning materials
                         </p>
                     </div>
-                    {documents.length === 0 && (
-                        <Button onClick={() => setIsUploadModalOpen(true)}>
-                            <Plus className="w-4 h-4" strokeWidth={2.5} />
-                            Upload Document
-                        </Button>
-                    )}
+                    <Button onClick={() => setIsUploadModalOpen(true)}>
+                        <Plus className="w-4 h-4" strokeWidth={2.5} />
+                        Upload Document
+                    </Button>
                 </div>
                 {renderContent()}
             </div>

@@ -187,7 +187,7 @@ return(
           </div>
           {/*Action button*/}
           <div className="mt-8 flex justify-center">
-            <Link to={`/documents.${quiz.document._id}`}>
+            <Link to={`/documents/${quiz.document._id}`}>
             <button className="group relative px-8 h-12 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-2xl transition-all duration-200 shadow-emerald-500/25 active:scale-95 overflow-hidden">
                 <span className="relative z-10 flex items-center gap-2">
                     <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" strokeWidth={2.5} />
