@@ -1,4 +1,6 @@
-export const BASE_URL = "https://ai-power-study-assistent-j7ai.onrender.com";
+export const BASE_URL = import.meta.env.MODE === 'development' 
+    ? "http://localhost:8000" 
+    : "https://ai-power-study-assistent-j7ai.onrender.com";
 
 export const API_PATHS = {
     AUTH: {

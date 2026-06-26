@@ -4,7 +4,7 @@ import quizService from '../../services/quizService';
 import PageHeader from '../../components/common/PageHeader';
 import Spinner from '../../components/common/Spinner';
 import toast from 'react-hot-toast';
-import { ArrowLeft, CheckCircle2, XCircle, Trophy, Target, BookOpen} from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle, Trophy, Target, BookOpen, History } from 'lucide-react';
 const QuizResultPage = ()=>{
 
 const { quizId }= useParams();
@@ -90,13 +90,13 @@ return(
                             </span>
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2  bg-emerald-50 border-emerald-200 rounded-xl">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600" StrokeWidth={2} />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600" strokeWidth={2} />
                             <span className="text-sm font-semibold text-emerald-700">
                                 {correctAnswers} Correct
                             </span>
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-rose-50 border-rose-200 rounded-xl">
-                            <XCircle className="w-4 h-4 text-rose-600" StrokeWidth={2} />
+                            <XCircle className="w-4 h-4 text-rose-600" strokeWidth={2} />
                             <span className="text-sm font-semibold text-rose-700">
                                 {incorrectAnswers} Incorrect
                             </span>
@@ -104,6 +104,41 @@ return(
                     </div>
             </div>
         </div>
+
+        {/* Attempt History */}
+        {quiz.attempts && quiz.attempts.length > 1 && (
+            <div className="bg-white/80 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-slate-200/50 p-8 mb-8">
+                <div className="flex items-center gap-3 mb-6">
+                    <History className="w-5 h-5 text-slate-600" strokeWidth={2} />
+                    <h3 className="text-lg font-semibold text-slate-900">Attempt History</h3>
+                </div>
+                <div className="space-y-3">
+                    {quiz.attempts.map((attempt, idx) => (
+                        <div key={idx} className={`flex items-center justify-between p-4 rounded-xl border ${idx === quiz.attempts.length - 1 ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200'}`}>
+                            <div className="flex items-center gap-4">
+                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${idx === quiz.attempts.length - 1 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-700'}`}>
+                                    #{idx + 1}
+                                </div>
+                                <div>
+                                    <p className={`text-sm font-semibold ${idx === quiz.attempts.length - 1 ? 'text-emerald-900' : 'text-slate-900'}`}>
+                                        Score: {attempt.score}%
+                                    </p>
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                        {new Date(attempt.completedAt).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                            {idx === quiz.attempts.length - 1 && (
+                                <span className="px-3 py-1 bg-white text-emerald-600 text-xs font-bold uppercase tracking-wider rounded-lg shadow-sm border border-emerald-100">
+                                    Latest
+                                </span>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+
           {/* Quiostions Review*/}
           <div className="space-y-6">
               <div className="flex item-center gap-3 mb-2">
@@ -127,9 +162,9 @@ return(
                                     </div>
                                     <div className={`shrink-0 w-10 rounded-xl flex items-center justify-center ${ isCorrect ? 'bg-emrald-50 border-2 border-emrald-200': 'bg-rose-50 border-2 border-rose-200'}`}>
                                      {isCorrect ?(
-                                        <CheckCircle2 className="w-5 h-5 text-emerald-600" strokeWidth={2,5}/>
+                                        <CheckCircle2 className="w-5 h-5 text-emerald-600" strokeWidth={2.5}/>
                                      ):(
-                                        <XCircle className="w-5 h-5 text-rose-600" strokeWidth={2,5}/>
+                                        <XCircle className="w-5 h-5 text-rose-600" strokeWidth={2.5}/>
                                      )}
                                     </div>
                                 </div>
@@ -152,12 +187,12 @@ return(
                                                     <div className="flex item-center gap-2">
                                                         {isCorrectOption && (
                                                             <span className="inline-flex  item-center gap-1 px-2 py-1 bg-emerald-50 border border-emerald-200 rounded-lg font-semibold text-emerald-700">
-                                                                <CheckCircle2 className="w-3 h-3" strokeWidth={2,5}/> Correct
+                                                                <CheckCircle2 className="w-3 h-3" strokeWidth={2.5}/> Correct
                                                             </span>
                                                         )}
                                                         {isWrongAnswer  && (
                                                             <span className="inline-flex  item-center gap-1 px-2 py-1 bg-rose-50 border border-rose-200 rounded-lg font-semibold text-rose-700">
-                                                                <XCircle className="w-3 h-3" strokeWidth={2,5}/> Your answer
+                                                                <XCircle className="w-3 h-3" strokeWidth={2.5}/> Your answer
                                                             </span>
                                                         )}
                                                     </div>
@@ -185,15 +220,22 @@ return(
                         );
                  })}
           </div>
-          {/*Action button*/}
-          <div className="mt-8 flex justify-center">
-            <Link to={`/documents/${quiz.document._id}`}>
-            <button className="group relative px-8 h-12 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-2xl transition-all duration-200 shadow-emerald-500/25 active:scale-95 overflow-hidden">
-                <span className="relative z-10 flex items-center gap-2">
-                    <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" strokeWidth={2.5} />
+          {/*Action buttons*/}
+          <div className="mt-8 flex justify-center gap-4">
+            <Link to={`/quizzes/${quiz.id}`}>
+            <button className="group relative px-8 h-12 bg-white border-2 border-emerald-500 hover:bg-emerald-50 text-emerald-600 rounded-2xl transition-all duration-200 shadow-sm active:scale-95 overflow-hidden">
+                <span className="relative z-10 flex items-center gap-2 font-semibold">
+                    Re-attempt Quiz
+                </span>
+            </button>
+            </Link>
+            <Link to={`/documents/${quiz.document._id || quiz.document}`}>
+            <button className="group relative px-8 h-12 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-2xl transition-all duration-200 shadow-emerald-500/25 active:scale-95 overflow-hidden">
+                <span className="relative z-10 flex items-center gap-2 font-semibold">
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" strokeWidth={2.5} />
                     Return to the Document
                 </span>
-                <div className="absolute inset-0 bg-linear-tor  from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-200"/>
+                <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-200"/>
             </button>
             </Link>
           </div>

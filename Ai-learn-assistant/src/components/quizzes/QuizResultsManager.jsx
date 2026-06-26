@@ -17,7 +17,32 @@ const QuizResultsManager = ({ documentId }) => {
             const data = await quizService.getQuizzesForDocument(documentId);
             // Filter only quizzes that have been completed
             const completedQuizzes = data.data.filter(q => q.completedAt);
-            setResults(completedQuizzes);
+            
+            // Flatten attempts so each attempt gets its own card
+            const flattenedResults = [];
+            completedQuizzes.forEach(quiz => {
+                if (quiz.attempts && quiz.attempts.length > 0) {
+                    quiz.attempts.forEach((attempt, index) => {
+                        flattenedResults.push({
+                            ...quiz,
+                            score: attempt.score,
+                            completedAt: attempt.completedAt,
+                            title: `${quiz.title} (Attempt ${index + 1})`,
+                            _uniqueId: `${quiz._id}-attempt-${index}`
+                        });
+                    });
+                } else {
+                    flattenedResults.push({
+                        ...quiz,
+                        _uniqueId: quiz._id
+                    });
+                }
+            });
+            
+            // Sort by most recently completed
+            flattenedResults.sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+            
+            setResults(flattenedResults);
         } catch (error) {
             toast.error('Failed to fetch quiz results.');
             console.error(error);
@@ -52,7 +77,7 @@ const QuizResultsManager = ({ documentId }) => {
         <div className="bg-white border border-neutral-200 rounded-lg p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {results.map((quiz) => (
-                    <QuizResultCard key={quiz._id} quiz={quiz} />
+                    <QuizResultCard key={quiz._uniqueId} quiz={quiz} />
                 ))}
             </div>
         </div>
