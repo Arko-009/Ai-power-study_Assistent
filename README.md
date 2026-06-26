@@ -87,5 +87,5 @@ Ai-power-study_Assistent/
   <i>Built with ❤️ using MongoDB, Express, React, Node.js & Gemini AI.</i>
   <br/>
   <br/>
-  <small><em>MyTracking Timestamps - QuizResult Page - 6:02:53 ; (25/05/2026)</em></small>
+  <small><em>Thank You To My partners -Arkan & Sandip 🤗 </em></small>
 </div>
