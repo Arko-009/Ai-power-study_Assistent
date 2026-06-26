@@ -31,11 +31,11 @@ const Header = ({ toggleSidebar }) => {
                             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:shadow-lg group-hover:shadow-emerald-500/30 transition-all duration-200">
                                 <User size={18} strokeWidth={2.5} />
                             </div>
-                            <div>
-                                <p className="text-sm font-semibold text-slate-900">
+                            <div className="hidden sm:block">
+                                <p className="text-sm font-semibold text-slate-900 truncate max-w-[120px]">
                                     {user?.username || 'User'}
                                 </p>
-                                <p className="text-xs text-slate-500">
+                                <p className="text-xs text-slate-500 truncate max-w-[120px]">
                                     {user?.email || 'user@example.com'}
                                 </p>
                             </div>

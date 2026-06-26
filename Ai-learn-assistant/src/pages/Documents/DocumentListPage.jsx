@@ -148,19 +148,21 @@ const DocumentListPage = () => {
             <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] opacity-30 pointer-events-none" />
             <div className="relative max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 md:mb-10">
                     <div>
-                        <h1 className="text-2xl font-medium text-slate-900 tracking-tight mb-2">
+                        <h1 className="text-2xl font-medium text-slate-900 tracking-tight mb-1 sm:mb-2">
                             My Documents
                         </h1>
                         <p className="text-slate-500 text-sm">
                             Manage and Organize your learning materials
                         </p>
                     </div>
-                    <Button onClick={() => setIsUploadModalOpen(true)}>
-                        <Plus className="w-4 h-4" strokeWidth={2.5} />
-                        Upload Document
-                    </Button>
+                    <div className="w-full sm:w-auto flex">
+                        <Button onClick={() => setIsUploadModalOpen(true)}>
+                            <Plus className="w-4 h-4" strokeWidth={2.5} />
+                            Upload Document
+                        </Button>
+                    </div>
                 </div>
                 {renderContent()}
             </div>

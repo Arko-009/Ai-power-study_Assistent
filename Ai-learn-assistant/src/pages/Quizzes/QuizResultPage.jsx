@@ -82,7 +82,7 @@ return(
                     <p className="text-lg font-medium text-slate-700">{getScoreMessage(score)}</p>
                    </div>
                     {/* Stats */}
-                    <div className="flex items-center justify-center gap-4 pt-4">
+                    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 pt-4">
                         <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 broder border-slate-200 rounded-xl">
                             <Target className="w-4 h-4 text-slate-600" strokeWidth={2} />
                             <span className="text-sm font-semibold text-slate-700">

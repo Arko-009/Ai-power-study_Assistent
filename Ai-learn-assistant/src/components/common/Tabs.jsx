@@ -4,12 +4,12 @@ const Tabs = ({ tabs, activeTab, setActiveTab }) => {
     return (
         <div className="w-full">
             <div className="relative border-b-2 border-slate-100">
-                <nav className="flex gap-2">
+                <nav className="flex gap-2 md:gap-4 overflow-x-auto overflow-y-hidden whitespace-nowrap pb-1 scrollbar-hide">
                     {tabs.map((tab) => (
                         <button
                             key={tab.name}
                             onClick={() => setActiveTab(tab.name)}
-                            className={`relative pb-4 px-2 md:px-6 text-sm font-semibold transition-all duration-200 ${activeTab === tab.name ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
+                            className={`relative pb-3 px-3 md:px-6 text-sm font-semibold whitespace-nowrap shrink-0 transition-all duration-200 ${activeTab === tab.name ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
                                 }`}
                         >
                             <span className="relative z-10">{tab.label}</span>
