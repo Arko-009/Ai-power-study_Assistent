@@ -18,11 +18,14 @@
 - 📱 **Seamlessly Responsive:** A sleek, glassy UI built with TailwindCSS that looks and feels like a native premium app on any device size.
 
 ## 📸 Screenshots
-> *(Screenshots coming soon!)*
+- **Dashboard View:**
+  ![Dashboard Screenshot](https://github.com/user-attachments/assets/e6bf4e52-74ff-44db-90f2-3339a2e6c6e6)
 
-- **Dashboard View:** `[Add Screenshot Here]`
-- **Document Chat & Viewer:** `[Add Screenshot Here]`
-- **Quiz Results & History:** `[Add Screenshot Here]`
+- **Document Chat & Viewer:**
+  ![Document Chat Screenshot](https://github.com/user-attachments/assets/5da72340-8925-418c-85d4-14dc18295592)
+
+- **Quiz Results & History:**
+  ![Quiz Results Screenshot](https://github.com/user-attachments/assets/6c4a5088-c2d3-4be5-8676-948fc798ae4c)
 
 ## 🚀 Local Setup & Installation
 
