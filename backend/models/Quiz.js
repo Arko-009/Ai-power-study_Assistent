@@ -69,7 +69,17 @@ const quizSchema = new mongoose.Schema({
     completedAt: {
         type: Date,
         default: null
-    }
+    },
+    attempts: [{
+        userAnswers: [{
+            questionIndex: Number,
+            selectedAnswer: String,
+            isCorrect: Boolean,
+            answeredAt: Date
+        }],
+        score: Number,
+        completedAt: Date
+    }]
 }, {
     timestamps: true
 });

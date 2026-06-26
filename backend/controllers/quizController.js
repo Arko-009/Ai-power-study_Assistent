@@ -73,13 +73,14 @@ export const submitQuiz = async (req, res, next) => {
             });
         }
 
-        if (quiz.completedAt) {
-            return res.status(400).json({
-                success: false,
-                error: "Quiz already completed",
-                statusCode: 400
-            });
-        }
+        // Allow re-attempts by removing the block on completed quizzes
+        // if (quiz.completedAt) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         error: "Quiz already completed",
+        //         statusCode: 400
+        //     });
+        // }
         // Process Answers
         let correctCount = 0;
         const userAnswers = [];
@@ -109,10 +110,20 @@ export const submitQuiz = async (req, res, next) => {
         });
         // Calculate Score
         const score = Math.round((correctCount / quiz.totalQuestions) * 100);
-        // Update Quiz
+        
+        // Add to historical attempts
+        const completedAt = new Date();
+        if (!quiz.attempts) quiz.attempts = [];
+        quiz.attempts.push({
+            userAnswers,
+            score,
+            completedAt
+        });
+
+        // Update Quiz latest attempt at root level
         quiz.userAnswers = userAnswers;
         quiz.score = score;
-        quiz.completedAt = new Date();
+        quiz.completedAt = completedAt;
         await quiz.save();
         res.status(200).json({
             success: true,
@@ -176,7 +187,9 @@ export const getQuizResults = async (req, res, next) => {
                     document: quiz.documentId,
                     score: quiz.score,
                     totalQuestions: quiz.totalQuestions,
-                    completedAt: quiz.completedAt
+                    completedAt: quiz.completedAt,
+                    attempts: quiz.attempts || []
+
                 },
                 results: detailedResults
             }
