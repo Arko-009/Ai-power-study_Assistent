@@ -18,7 +18,7 @@
 - 📱 **Seamlessly Responsive:** A sleek, glassy UI built with TailwindCSS that looks and feels like a native premium app on any device size.
 
 ## 📸 Screenshots
-- 
+
 - **Dashboard View:**
   ![Dashboard Screenshot](https://github.com/user-attachments/assets/e6bf4e52-74ff-44db-90f2-3339a2e6c6e6)
 - **Document Chat & Viewer:**
