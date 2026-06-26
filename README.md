@@ -20,9 +20,9 @@
 ## 📸 Screenshots
 > *(Screenshots coming soon!)*
 
-- **Dashboard View:** `[Add Screenshot Here]`
-- **Document Chat & Viewer:** `[Add Screenshot Here]`
-- **Quiz Results & History:** `[Add Screenshot Here]`
+- **Dashboard View:** `<img width="1896" height="862" alt="Screenshot 2026-06-27 013447" src="https://github.com/user-attachments/assets/e6bf4e52-74ff-44db-90f2-3339a2e6c6e6" />`
+- **Document Chat & Viewer:** `<img width="1897" height="857" alt="Screenshot 2026-06-27 013622" src="https://github.com/user-attachments/assets/5da72340-8925-418c-85d4-14dc18295592" />`
+- **Quiz Results & History:** `<img width="1896" height="856" alt="Screenshot 2026-06-27 013800" src="https://github.com/user-attachments/assets/6c4a5088-c2d3-4be5-8676-948fc798ae4c" />`
 
 ## 🚀 Local Setup & Installation
 
